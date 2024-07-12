@@ -1,0 +1,73 @@
+body {
+    font-family: sans-serif;
+}
+
+#stats-form label {
+display: block;
+margin-bottom: 5px;
+}
+
+#stats-form input {
+width: 200px;
+padding: 5px;
+border: 1px solid #ccc;
+margin-bottom: 10px;
+}
+
+#stats-form button {
+padding: 8px 15px;
+background-color: #4CAF50;
+color: white;
+border: none;
+cursor: pointer;
+}
+
+#rating-info {
+margin-top: 20px;
+font-size: 18px;
+}
+
+#rating-info span {
+font-weight: bold;
+}
+
+#main-stats {
+margin-top: 10px;
+font-size: 16px;
+}
+
+#main-stats ul {
+list-style: none;
+padding: 0;
+}
+
+#main-stats li {
+margin-bottom: 5px;
+}
+
+.chart-container {
+    width: 45%;  /* Уменьшенная ширина */
+    height: 190px; /* Уменьшенная высота */
+    margin-top: 20px;
+}
+
+.input-stats-area {
+    display: flex;
+    gap: 20px;
+}
+
+.input-area, .stats-area {
+    width: 50%;
+}
+
+.charts {
+
+}
+
+.charts .chart-container { /* Обратите внимание на пробел между .charts и .chart-container */
+    flex-direction: row; /* Графики в строку */
+    flex-wrap: wrap; /* Перенос на новую строку */
+    gap: 20px;
+    width: 100%;
+    margin-top: 100px; /* увеличьте значение, если нужно большее смещение */
+}

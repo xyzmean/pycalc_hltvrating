@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CS Rating Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <h1>CS Rating Calculator</h1>
+
+    <div class="input-stats-area">
+      <div class="input-area">
+        {% if current_username %}
+          <h2>Пользователь: {{ current_username }}</h2>
+        {% endif %}
+        <form method="POST" id="stats-form">
+          <label for="kdr">K/D Ratio:</label>
+          <input type="number" id="kdr" name="kdr" step="0.01" required><br><br>
+
+          <label for="total_kills">Всего убийств:</label>
+          <input type="number" id="total_kills" name="total_kills" required><br><br>
+
+          <label for="total_deaths">Всего смертей:</label>
+          <input type="number" id="total_deaths" name="total_deaths" required><br><br>
+
+          <label for="damage_per_round">Урон за раунд:</label>
+          <input type="number" id="damage_per_round" name="damage_per_round" step="0.01" required><br><br>
+
+          <label for="rounds">Всего раундов:</label>
+          <input type="number" id="rounds" name="rounds" required><br><br>
+
+          <label for="headshot_percent">Процент хедшотов:</label>
+          <input type="number" id="headshot_percent" name="headshot_percent" min="0" max="100" required><br><br>
+
+          <button type="submit">Рассчитать</button>
+        </form>
+
+        <h3>Сменить пользователя:</h3>
+        <form method="POST" action="/change_user">
+          <input type="text" name="username" placeholder="Имя пользователя">
+          <button type="submit">Сменить</button>
+        </form>
+      </div>
+
+      <div class="stats-area">
+        <h2>Статистика</h2>
+        <div id="main-stats">
+          <ul>
+            {% for stat, value in user_stats.items() %}
+              <li><b>{{ stat }}:</b> {{ value }}</li>
+            {% endfor %}
+          </ul>
+          <b>Средний рейтинг:</b> {{ average_rating }}
+        </div>
+      </div>
+    </div>
+
+    <div class="charts">
+        {% for username, stats in chart_data.items() %}
+            <h2>Графики для {{ username }}</h2>
+
+            {% for stat_name, values in stats.items() %}
+                <div class="chart-container">
+                    <h4>{{ stat_name }}</h4>
+                    <canvas id="chart-{{ username }}-{{ stat_name }}"></canvas>
+                    <script>
+                        var ctx = document.getElementById('chart-{{ username }}-{{ stat_name }}').getContext('2d');
+                        var chartData = {{ values|tojson }};
+                        var myChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: Array.from({length: chartData.length}, (_, i) => i + 1),
+                                datasets: [{
+                                    label: '{{ stat_name }}',
+                                    data: chartData,
+                                    borderColor: '#' + Math.floor(Math.random()*16777215).toString(16),
+                                    fill: false
+                                }]
+                            }
+                        });
+                    </script>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+  </body>
+</html>
